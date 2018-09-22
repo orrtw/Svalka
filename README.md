@@ -7,23 +7,27 @@ import matplotlib.pyplot as plt
 import json
 with netcdf_file(r'C:\Users\Наталия .LAPTOP-61AJMTC8\MSR-2.nc', mmap=False) as f:
     variables = f.variables
-latitude_index = np.searchsorted(variables['latitude'].data,-33.27)
-longitude_index = np.searchsorted(variables['longitude'].data,-70.40) 
-data = variables['Average_O3_column'][:, latitude_index, longitude_index][:]
-january_data = data[::12]
+print(variables['lon'].units)
+print(variables['lat'].units)
+lat_index = np.searchsorted(variables['lat'].data,-33.27)
+lon_index = np.searchsorted(variables['lon'].data,-70.40) 
+print('lon_index:',lon_index)
+print('lat_index:',lat_index)
+data = variables['Average_O3_column'][:, lat_index, lon_index][:]
+jan_data = data[::12]
 july_data = data[6::12]
 time = variables['time'][:]
-january_time=time[::12]
+jan_time=time[::12]
 july_time=time[6::12]
 plt.plot(variables['time'].data, data,label = 'Все время') 
-plt.plot(january_time, january_data, label = 'Январь')
+plt.plot(jan_time, jan_data, label = 'Январь')
 plt.plot(july_time, july_data, label = 'Июль')
 plt.legend()
 plt.grid()
 plt.savefig('ozon.png')
-print('min(Январь) =', np.min(january_data), 'max(Январь) =', np.max(january_data),'mean(Январь) =', np.mean(january_data))
-print('min(Июль) =', np.min(july_data), 'max(Июль) =', np.max(july_data),'mean(Июль) =', np.mean(july_data))
-print('min(Все) =', np.min(data), 'max(Все) =', np.max(data),'mean(Все) =', np.mean(data))
+print('min(jan) =', np.min(jan_data), 'max(jan) =', np.max(jan_data),'mean(jan) =', np.mean(jan_data))
+print('min(jul) =', np.min(july_data), 'max(jul) =', np.max(july_data),'mean(jul) =', np.mean(july_data))
+print('min(all) =', np.min(data), 'max(all) =', np.max(data),'mean(all) =', np.mean(data))
 d = {
   "city": "Moscow",
   "coordinates": [-33.27, 70.40],
