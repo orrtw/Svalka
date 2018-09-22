@@ -1,7 +1,8 @@
 # Svalka
+
 <
-import numpy as np 
-from scipy.io.netcdf import netcdf_file
+import numpy as np \\
+from scipy.io.netcdf import netcdf_file\\
 import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 with netcdf_file(r'C:\Users\Наталия .LAPTOP-61AJMTC8\MSR-2.nc', mmap=False) as f:
