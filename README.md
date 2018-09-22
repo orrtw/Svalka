@@ -1,6 +1,6 @@
 # Svalka
 
-<
+```
 import numpy as np \\
 from scipy.io.netcdf import netcdf_file\\
 import matplotlib; matplotlib.use('Agg')
@@ -21,4 +21,4 @@ july_time=time[6::12]
 plt.plot(variables['time'].data, data,label = 'За все время') 
 plt.plot(january_time, january_data, label = 'Январь')
 plt.plot(july_time, july_data, label = 'Июль')
->
+```
