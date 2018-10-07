@@ -1,0 +1,27 @@
+import numpy as np
+import scipy
+Result = namedtuple('Result', ('nfev', 'cost', 'gradnorm', 'x'))
+
+def gauss_newton(y,f,j,atol=1e-4,x0, k=1):
+    x = np.asarray(x0,dtype=np.float)#если изменить х х0 не менялось
+    i = 0
+    cost = [1]
+    while True:
+        i += 1
+        r = y - f(*x)#
+        cur_cost = 0.5 * np.dot(r,r)# чему равна исходная функция( это скалярное произвед)
+        jac = j(*x)#*х раскрывает параметр def f(a,b,c)--> f(*x)=f(x[0],x[1]..)
+        g = np.dot(jac.T, r)#правая часть ур
+        delta_x = np.linalg.solve(np.dot(jac.T,jac),g)
+        x += k * delta_x
+        if np.linalg.norm(g) <= atol:
+            break
+    cost = np.array(cost) 
+    return Result(nfev=i, cost=cost, gradnorm=np.linalg.norm(g),x=x)
+
+def f(t,a,b,c):
+    jac= np.empty((t.size,3), dtype=np.float)
+    jac[:,0] = -b*t**3*np.exp(-a*t)
+    jac[:,1] = np.exp(-a*t)*t**2
+    jac[:,2]=1.0
+    returne jac 
