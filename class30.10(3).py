@@ -7,26 +7,23 @@ Created on Tue Oct 30 13:16:57 2018
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from scipy import stats 
+import astropy.units as u 
+from astropy.coordinates import SkyCoord 
+from astroquery.vizier import Vizier
 
-tau1= 0.4
-tau2 = 0.6
-mu1= np.array([0.5, 0.5])
-mu2 = np.array([-0.5,-0.5])
-sigma1 = 0.4
-sigma2 = 0.3
-n=1000
+center_coords = SkyCoord('02h21m00s +57d07m42s')
+vizier = Vizier(column_filters={'Bmag': '<13'}, row_limit=10000)
+usno_sources = vizier.query_region(
+        center_coords,
+        width= 90*u.arcmin,
+        height=90*u.arcmin,
+        catalog='USNO-A2.0',
+        )[0]
+print(usno_sources)
 
-x_n1 = stats.multivariate_normal(mu1, sigma1**2).rvs(int(n * tau1))
-x_n2 = stats.multivariate_normal(mu2, sigma2**2).rvs(int(n * tau2))
-x_u = stats.uniform(np.array([-1.5, -1.5]), np.array([3.0, 3.0])).rvs(int(n*(1-tau1-tau2)))
+ra= usno_sources['RAJ2000']._data
+dec = usno_sources['DEJ2000']._data
+x = np.vstack(((ra - ra.mean())*np.cos(dec/180*np.pi)+ra.mean(), dec)).T
 
-x = np.vstack([x_n1, x_n2])
-
+plt.plot(*x.T, '*')
 print(x)
-#plt.plot(*x, '*', color='red')
-plt.scatter(*x.T, color='red')
-
-
-#stats.multivariate_normal(mu, sigma1**2, sigma2**2)
-                          
