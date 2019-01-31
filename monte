@@ -1,0 +1,31 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+n = 1000
+'''
+a = np.random.uniform(-1, 1, size=1000) 
+b = np.random.uniform(-1, 1, size=1000) 
+
+
+s = 0
+for i in range(n):
+    if a[i]**2+b[i]**2 <= 1:
+        s += a + b
+
+print(s)
+'''
+x = np.random.uniform(-1, 1, size=1000)
+
+def f(x):
+    return ((2/np.pi)*1/(1+x**2))
+
+
+def g(y):
+    return (2/np.pi)*1/(1+y**2) 
+
+y = np.linspace(-20, 20, 10)
+plt.plot(y, 2/(np.pi*(1+y**2)))
+
+
+
+plt.hist(f(x), bins = 1000, range=(-20, 20))
